@@ -1,0 +1,115 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0400
+header_name {MyCubeViewUI.h}
+code_name {MyCubeViewUI.cxx}
+class MyCubeViewUI {open
+} {
+  Function {show(int argc, char **argv)} {open
+  } {
+    code {window->show(argc, argv);} {}
+  }
+  Function {MyCubeViewUI()} {
+    comment test open
+  } {
+    Fl_Window window {open
+      xywh {798 235 840 556} type Double visible
+    } {
+      Fl_Group {} {open
+        xywh {0 0 840 162}
+      } {
+        Fl_Box {} {
+          label {Dan's Planometric Sprite Generator}
+          xywh {0 0 840 96} labelfont 7 labelsize 30 align 128
+        }
+      }
+      Fl_Group {} {
+        xywh {15 90 381 452} box UP_FRAME
+      } {
+        Fl_Box cube {
+          label {opengl context}
+          xywh {75 118 256 256}
+          code0 {\#include "SimpleGL3Window.h"}
+          code1 {cube->uiStuff = this;}
+          class SimpleGL3Window
+        }
+        Fl_Button {} {
+          label {Take screenshot}
+          callback {cube->WriteToImage();}
+          xywh {123 503 159 20}
+        }
+        Fl_Choice {} {
+          label {number of directions}
+          xywh {224 473 92 22} down_box BORDER_BOX
+        } {
+          MenuItem {} {
+            label 8
+            callback {cube->directionsToCapture = 8;}
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label 16
+            callback {cube->directionsToCapture = 16;}
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label 32
+            callback {cube->directionsToCapture = 32;}
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label 64
+            callback {cube->directionsToCapture = 64;}
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label 128
+            callback {cube->directionsToCapture = 128;}
+            xywh {0 0 100 20}
+          }
+        }
+        Fl_Value_Slider rotationSlider {
+          label {rotation y axis}
+          callback {cube->rotationAngle = ((Fl_Slider*)o)->value();}
+          xywh {92 424 224 24} type {Horz Knob} maximum 360 step 1 textsize 14
+        }
+        Fl_Value_Slider verticalRotationSlider {
+          label {rotation x axis}
+          callback {cube->verticalRotationAngle = ((Fl_Slider*)o)->value();}
+          xywh {92 382 224 24} type {Horz Knob} maximum 360 step 1 textsize 14
+        }
+      }
+      Fl_Group {} {open
+        xywh {400 90 422 451}
+      } {
+        Fl_Slider cubeScaleSlider {
+          label {cube scale}
+          callback {cube->cubeScale = ((Fl_Slider*)o)->value();}
+          xywh {455 278 300 24} type {Horz Knob} minimum -100 maximum 100 step 0.01 value 1
+        }
+        Fl_Value_Slider {} {
+          label scale
+          callback {cube->zScale = ((Fl_Slider*)o)->value();}
+          xywh {455 148 300 24} type {Horz Knob} textsize 14
+        }
+        Fl_Value_Slider {} {
+          label offset
+          callback {cube->zOffset = ((Fl_Slider*)o)->value();}
+          xywh {455 235 300 24} type {Horz Knob} minimum -50 maximum 50 textsize 14
+        }
+        Fl_Value_Slider {} {
+          label {camera zoom}
+          callback {cube->cameraZoom = ((Fl_Slider*)o)->value();}
+          xywh {455 109 300 24} type Horizontal minimum -25 maximum 25 value -5 textsize 14
+        }
+        Fl_Value_Slider {} {
+          label {ortho size}
+          callback {cube->orthoSize = ((Fl_Slider*)o)->value();}
+          xywh {455 195 300 24} type {Horz Knob} minimum -100 maximum 100 value 5 textsize 14
+        }
+        Fl_Tree meshTree {selected
+          xywh {410 318 148 223}
+        }
+      }
+    }
+  }
+}
