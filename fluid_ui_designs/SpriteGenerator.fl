@@ -12,22 +12,22 @@ class MyCubeViewUI {open
     comment test open
   } {
     Fl_Window window {open
-      xywh {798 235 840 556} type Double visible
+      xywh {1973 69 991 696} type Double visible
     } {
       Fl_Group {} {open
-        xywh {0 0 840 162}
+        xywh {0 0 991 72}
       } {
         Fl_Box {} {
-          label {Dan's Planometric Sprite Generator}
-          xywh {0 0 840 96} labelfont 7 labelsize 30 align 128
+          label {Sprite Generator}
+          xywh {1 0 990 72} labelfont 7 labelsize 30 align 128
         }
       }
-      Fl_Group {} {
-        xywh {15 90 381 452} box UP_FRAME
+      Fl_Group {} {open selected
+        xywh {15 89 958 592} box UP_FRAME
       } {
         Fl_Box cube {
           label {opengl context}
-          xywh {75 118 256 256}
+          xywh {349 166 256 256}
           code0 {\#include "SimpleGL3Window.h"}
           code1 {cube->uiStuff = this;}
           class SimpleGL3Window
@@ -35,11 +35,11 @@ class MyCubeViewUI {open
         Fl_Button {} {
           label {Take screenshot}
           callback {cube->WriteToImage();}
-          xywh {123 503 159 20}
+          xywh {362 647 208 24}
         }
         Fl_Choice {} {
-          label {number of directions}
-          xywh {224 473 92 22} down_box BORDER_BOX
+          label {Number of directions}
+          xywh {510 610 56 24} down_box BORDER_BOX
         } {
           MenuItem {} {
             label 8
@@ -67,47 +67,82 @@ class MyCubeViewUI {open
             xywh {0 0 100 20}
           }
         }
-        Fl_Value_Slider rotationSlider {
-          label {rotation y axis}
+        Fl_Value_Slider rotationSliderY {
+          label {Rotate model y}
           callback {cube->rotationAngle = ((Fl_Slider*)o)->value();}
-          xywh {92 424 224 24} type {Horz Knob} maximum 360 step 1 textsize 14
+          xywh {25 596 198 22} type {Horz Knob} maximum 360 step 1 textsize 14
         }
-        Fl_Value_Slider verticalRotationSlider {
-          label {rotation x axis}
+        Fl_Value_Slider rotationSliderZ {
+          label {Rotate model z}
+          callback {cube->rotationAngle = ((Fl_Slider*)o)->value();}
+          xywh {25 633 198 22} type {Horz Knob} maximum 360 step 1 textsize 14
+        }
+        Fl_Value_Slider rotationSliderX {
+          label {Rotate model x}
           callback {cube->verticalRotationAngle = ((Fl_Slider*)o)->value();}
-          xywh {92 382 224 24} type {Horz Knob} maximum 360 step 1 textsize 14
+          xywh {25 558 198 24} type {Horz Knob} maximum 360 step 1 textsize 14
         }
-      }
-      Fl_Group {} {open
-        xywh {400 90 422 451}
-      } {
-        Fl_Slider cubeScaleSlider {
-          label {cube scale}
-          callback {cube->cubeScale = ((Fl_Slider*)o)->value();}
-          xywh {455 278 300 24} type {Horz Knob} minimum -100 maximum 100 step 0.01 value 1
+        Fl_Tree meshTree {
+          xywh {801 107 156 304}
         }
-        Fl_Value_Slider {} {
-          label scale
-          callback {cube->zScale = ((Fl_Slider*)o)->value();}
-          xywh {455 148 300 24} type {Horz Knob} textsize 14
+        Fl_Group {} {
+          xywh {688 439 275 232}
+        } {
+          Fl_Slider cubeScaleSlider {
+            label {cube scale}
+            callback {cube->cubeScale = ((Fl_Slider*)o)->value();}
+            xywh {701 633 256 24} type {Horz Knob} minimum -100 maximum 100 step 0.01 value 1
+          }
+          Fl_Value_Slider {} {
+            label scale
+            callback {cube->zScale = ((Fl_Slider*)o)->value();}
+            xywh {701 543 256 24} type {Horz Knob} textsize 14
+          }
+          Fl_Value_Slider {} {
+            label offset
+            callback {cube->zOffset = ((Fl_Slider*)o)->value();}
+            xywh {701 586 256 24} type {Horz Knob} minimum -50 maximum 50 textsize 14
+          }
+          Fl_Value_Slider {} {
+            label {camera zoom}
+            callback {cube->cameraZoom = ((Fl_Slider*)o)->value();}
+            xywh {701 454 256 24} type Horizontal minimum -25 maximum 25 value -5 textsize 14
+          }
+          Fl_Value_Slider {} {
+            label {ortho size}
+            callback {cube->orthoSize = ((Fl_Slider*)o)->value();}
+            xywh {701 497 256 24} type {Horz Knob} minimum -100 maximum 100 value 5 textsize 14
+          }
         }
-        Fl_Value_Slider {} {
-          label offset
-          callback {cube->zOffset = ((Fl_Slider*)o)->value();}
-          xywh {455 235 300 24} type {Horz Knob} minimum -50 maximum 50 textsize 14
+        Fl_Choice {} {
+          label {Sprite size}
+          xywh {446 546 120 24} down_box BORDER_BOX
+        } {
+          MenuItem {} {
+            label 512x512
+            xywh {20 20 100 20}
+          }
+          MenuItem {} {
+            label 128x128
+            xywh {20 20 100 20}
+          }
+          MenuItem {} {
+            label 64x64
+            xywh {30 30 100 20}
+          }
         }
-        Fl_Value_Slider {} {
-          label {camera zoom}
-          callback {cube->cameraZoom = ((Fl_Slider*)o)->value();}
-          xywh {455 109 300 24} type Horizontal minimum -25 maximum 25 value -5 textsize 14
-        }
-        Fl_Value_Slider {} {
-          label {ortho size}
-          callback {cube->orthoSize = ((Fl_Slider*)o)->value();}
-          xywh {455 195 300 24} type {Horz Knob} minimum -100 maximum 100 value 5 textsize 14
-        }
-        Fl_Tree meshTree {selected
-          xywh {410 318 148 223}
+        Fl_Choice {} {
+          label Shader open
+          xywh {422 578 144 24} down_box BORDER_BOX
+        } {
+          MenuItem {} {
+            label {Gouraud shading}
+            xywh {0 0 100 20}
+          }
+          MenuItem {} {
+            label Unlit
+            xywh {0 0 100 20}
+          }
         }
       }
     }

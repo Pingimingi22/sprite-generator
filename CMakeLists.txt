@@ -9,8 +9,8 @@ set(SOURCES
 	"./src/Mesh.cpp"
 	"./src/Source.cpp"
 	"./src/OpenGL3test.cxx"
-	"./fluid_ui_designs/generated_src/CubeView.cxx"
-	"./fluid_ui_designs/generated_src/MyCubeViewUI.cxx"
+	"./fluid_ui_designs/CubeView.cxx"
+	"./fluid_ui_designs/MyCubeViewUI.cxx"
 )
 
 file(GLOB HEADERS
@@ -18,7 +18,7 @@ file(GLOB HEADERS
 	"./inc/SimpleGL3Window.h"
 	"./inc/stb_image.h"
 	"./inc/stb_image_write.h"
-	"./fluid_ui/designs/generated_inc/MyCubeViewUI.h"
+	"./fluid_ui_designs/MyCubeViewUI.h"
 )
 
 file(GLOB THIRD_PARTY_LIBRARIES 
@@ -88,7 +88,7 @@ include_directories(${HEADERS})
 include_directories("./Libraries/glm")
 #include_directories("./Libraries/fltk")
 include_directories("./inc/")
-include_directories("./fluid_ui_designs/generated_inc")
+include_directories("./fluid_ui_designs/")
 
 add_executable(DansSpriteGenerator ${SOURCES} ${HEADERS})
 

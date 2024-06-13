@@ -10,8 +10,8 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Value_Slider.H>
-#include <FL/Fl_Slider.H>
 #include <FL/Fl_Tree.H>
+#include <FL/Fl_Slider.H>
 
 class MyCubeViewUI {
 public:
@@ -22,7 +22,7 @@ public:
 private:
   inline void cb_Take_i(Fl_Button*, void*);
   static void cb_Take(Fl_Button*, void*);
-  static Fl_Menu_Item menu_number[];
+  static Fl_Menu_Item menu_Number[];
   inline void cb_8_i(Fl_Menu_*, void*);
   static void cb_8(Fl_Menu_*, void*);
   inline void cb_16_i(Fl_Menu_*, void*);
@@ -34,16 +34,22 @@ private:
   inline void cb_128_i(Fl_Menu_*, void*);
   static void cb_128(Fl_Menu_*, void*);
 public:
-  Fl_Value_Slider *rotationSlider;
+  Fl_Value_Slider *rotationSliderY;
 private:
-  inline void cb_rotationSlider_i(Fl_Value_Slider*, void*);
-  static void cb_rotationSlider(Fl_Value_Slider*, void*);
+  inline void cb_rotationSliderY_i(Fl_Value_Slider*, void*);
+  static void cb_rotationSliderY(Fl_Value_Slider*, void*);
 public:
-  Fl_Value_Slider *verticalRotationSlider;
+  Fl_Value_Slider *rotationSliderZ;
 private:
-  inline void cb_verticalRotationSlider_i(Fl_Value_Slider*, void*);
-  static void cb_verticalRotationSlider(Fl_Value_Slider*, void*);
+  inline void cb_rotationSliderZ_i(Fl_Value_Slider*, void*);
+  static void cb_rotationSliderZ(Fl_Value_Slider*, void*);
 public:
+  Fl_Value_Slider *rotationSliderX;
+private:
+  inline void cb_rotationSliderX_i(Fl_Value_Slider*, void*);
+  static void cb_rotationSliderX(Fl_Value_Slider*, void*);
+public:
+  Fl_Tree *meshTree;
   Fl_Slider *cubeScaleSlider;
 private:
   inline void cb_cubeScaleSlider_i(Fl_Slider*, void*);
@@ -56,7 +62,7 @@ private:
   static void cb_camera(Fl_Value_Slider*, void*);
   inline void cb_ortho_i(Fl_Value_Slider*, void*);
   static void cb_ortho(Fl_Value_Slider*, void*);
-public:
-  Fl_Tree *meshTree;
+  static Fl_Menu_Item menu_Sprite[];
+  static Fl_Menu_Item menu_Shader[];
 };
 #endif
