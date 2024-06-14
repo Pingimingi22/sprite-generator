@@ -1,7 +1,14 @@
+#if defined(__APPLE__)
+  #ifndef GL_SILENCE_DEPRECATION
+    #define GL_SILENCE_DEPRECATION 1
+  #endif
+#endif
+
 #include "Mesh.h"
 #include <iostream>
 #include "stb_image.h"
 #include "MyCubeViewUI.h"
+
 
 
 Mesh::Mesh(aiMesh* mesh, std::string diffuseTexture, MyCubeViewUI* ui)
