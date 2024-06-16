@@ -248,6 +248,7 @@ void SimpleGL3Window::WriteToImage() {
   char red[3] = {255, 255, 255};
 
   int width, height, channels;
+  channels = 3;
   unsigned char *img = stbi_load("danstestfile.png", &width, &height, &channels, 0);
   width = uiStuff->cube->w();
   height = uiStuff->cube->h();
@@ -256,10 +257,6 @@ void SimpleGL3Window::WriteToImage() {
   std::cout << "Loaded image with width: " << width << " height: " << height
             << " channels: " << channels << std::endl;
 
-  Assimp::Importer importer;
-
-
-  // glBindVertexArray(vertexArrayObject);
 
   // directionsToCapture = 2;
 
@@ -369,12 +366,19 @@ void SimpleGL3Window::WriteToImage() {
   }
 
   stbi_flip_vertically_on_write(0);
-  std::string fileName = "sprites/danssprite.png";
+
+  std::string fileName = "danssprite.png";
  // stbi_write_png(fileName.c_str(), width, height*directionsToCapture, channels, &totalPixelData[0], width * 3);
   //stbi_write_png(fileName.c_str(), width*amountOfGridRows, height*amountOfGridRows, channels,
     //             &gridPixelData[0], width * 3 * amountOfGridRows);
-  stbi_write_png(fileName.c_str(), width * amountOfGridRows, height * amountOfGridRows, channels,
-                 &upsideDownPixelData[0], width * 3 * amountOfGridRows);
+  if (stbi_write_png(fileName.c_str(), width * amountOfGridRows, height * amountOfGridRows, channels,
+      &upsideDownPixelData[0], width * 3 * amountOfGridRows) > 0) {
+      std::cout << "Successfully generated sprite sheet." << std::endl;
+  }
+  else {
+      std::cout << "ERROR could not generate sprite sheet." << std::endl;
+  }
+
 
   /* rotationAngle = 0;
   verticalRotationAngle = 0;
