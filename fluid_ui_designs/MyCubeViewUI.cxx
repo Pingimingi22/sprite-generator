@@ -138,19 +138,21 @@ Fl_Menu_Item MyCubeViewUI::menu_Shader[] = {
 };
 
 void MyCubeViewUI::cb_Load_i(Fl_Menu_*, void*) {
-  Fl_File_Chooser chooser(".", "*", Fl_File_Chooser::SINGLE, "Load a model");
-  chooser.show();
+  Fl_Native_File_Chooser chooser;
+  chooser.title("Pick a model");
+  chooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
+  chooser.directory(".");
 
-  while(chooser.shown())
-  {
-  	Fl::wait();
+  switch(chooser.show()) {
+  	case -1: std::cout << "Error when choosing a file." << std::endl;
+  		break;
+  	case 1: std::cout << "File chooser cancelled." << std::endl;
+  		break;
+  	default:
+  		cube->DeleteCurrentModel();
+  		cube->LoadModel(chooser.filename());
+  		break;
   }
-  if(chooser.value() == NULL) {
-  	return;
-  }
-
-  cube->DeleteCurrentModel();
-  cube->LoadModel(chooser.value());
 }
 void MyCubeViewUI::cb_Load(Fl_Menu_* o, void* v) {
   ((MyCubeViewUI*)(o->parent()->parent()->user_data()))->cb_Load_i(o,v);

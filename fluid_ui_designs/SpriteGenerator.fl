@@ -12,7 +12,7 @@ class MyCubeViewUI {open
     comment test open
   } {
     Fl_Window window {open
-      xywh {2105 98 991 696} type Double visible
+      xywh {2640 106 991 696} type Double visible
     } {
       Fl_Group {} {open
         xywh {0 26 991 80}
@@ -160,21 +160,23 @@ class MyCubeViewUI {open
           } {
             MenuItem {} {
               label {Load model}
-              callback {Fl_File_Chooser chooser(".", "*", Fl_File_Chooser::SINGLE, "Load a model");
-chooser.show();
+              callback {Fl_Native_File_Chooser chooser;
+chooser.title("Pick a model");
+chooser.type(Fl_Native_File_Chooser::BROWSE_FILE);
+chooser.directory(".");
 
-while(chooser.shown())
-{
-	Fl::wait();
-}
-if(chooser.value() == NULL) {
-	return;
-}
-
-cube->DeleteCurrentModel();
-cube->LoadModel(chooser.value())} selected
+switch(chooser.show()) {
+	case -1: std::cout << "Error when choosing a file." << std::endl;
+		break;
+	case 1: std::cout << "File chooser cancelled." << std::endl;
+		break;
+	default:
+		cube->DeleteCurrentModel();
+		cube->LoadModel(chooser.filename());
+		break;
+}} selected
               xywh {0 0 100 20}
-              code0 {\#include <FL/Fl_File_Chooser.H>}
+              code0 {\#include <FL/Fl_Native_File_Chooser.H>}
             }
           }
         }

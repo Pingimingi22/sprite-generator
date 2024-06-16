@@ -14,7 +14,7 @@
 #include <FL/Fl_Tree.H>
 #include <FL/Fl_Slider.H>
 #include <FL/Fl_Menu_Bar.H>
-#include <FL/Fl_File_Chooser.H>
+#include <FL/Fl_Native_File_Chooser.H>
 
 class MyCubeViewUI {
 public:

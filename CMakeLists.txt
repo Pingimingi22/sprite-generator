@@ -7,7 +7,7 @@ project(SpriteGenerator)
 
 find_package(OpenGL REQUIRED)
 
-set(GLOB SOURCES
+file(GLOB SOURCES
 	"./src/Mesh.cpp"
 	"./src/Source.cpp"
 	"./src/OpenGL3test.cxx"
