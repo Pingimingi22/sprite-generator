@@ -50,8 +50,13 @@ public:
     glm::mat4 projection;
 
     float speed = 0.01;
-    float rotationAngle = 0;
-    float verticalRotationAngle = 0;
+
+    // Exposing model rotation for UI
+    float xAxisModelRotation = 0;
+    float yAxisModelRotation = 0;
+    float zAxisModelRotation = 0;
+
+
     float cubeScale = 1.0f;
     int directionsToCapture = 8;
 

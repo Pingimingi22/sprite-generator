@@ -112,10 +112,12 @@
       int uniformLocation2 = glGetUniformLocation(activeShaderProgram, "yOffset");
 
        model = glm::mat4(1.0f);
-      model = glm::rotate(glm::mat4(1.0f), rotationAngle * ((3.14159265f)/180),
+      model = glm::rotate(glm::mat4(1.0f), yAxisModelRotation * ((3.14159265f)/180),
                           glm::vec3(0.0f, 1.0f, 0.0f));
-       model = glm::rotate(model, verticalRotationAngle * ((3.14159265f) / 180),
+       model = glm::rotate(model, xAxisModelRotation * ((3.14159265f) / 180),
                            glm::vec3(1.0f, 0.0f, 0.0f));
+       model = glm::rotate(model, zAxisModelRotation * ((3.14159265f) / 180), 
+                           glm::vec3(0.0f, 0.0f, 1.0f));
 
        model = glm::scale(model, glm::vec3(cubeScale, cubeScale, cubeScale));
 
@@ -279,12 +281,12 @@ void SimpleGL3Window::WriteToImage() {
 
   for (int i = 0; i < directionsToCapture; i++) {
     int currentDegrees = i * (360.0f / directionsToCapture);
-    rotationAngle = currentDegrees;
-    verticalRotationAngle = 0;
+    yAxisModelRotation = currentDegrees;
+    xAxisModelRotation = 0;
     model = glm::mat4(1.0f);
-    model = glm::rotate(glm::mat4(1.0f), rotationAngle * ((3.14159265f) / 180),
+    model = glm::rotate(glm::mat4(1.0f), yAxisModelRotation * ((3.14159265f) / 180),
                         glm::vec3(0.0f, 1.0f, 0.0f));
-    model = glm::rotate(model, verticalRotationAngle * ((3.14159265f) / 180),
+    model = glm::rotate(model, xAxisModelRotation * ((3.14159265f) / 180),
                         glm::vec3(1.0f, 0.0f, 0.0f));
 
     model = glm::scale(model, glm::vec3(cubeScale, cubeScale, cubeScale));

@@ -54,21 +54,21 @@ Fl_Menu_Item MyCubeViewUI::menu_Number[] = {
 };
 
 void MyCubeViewUI::cb_rotationSliderY_i(Fl_Value_Slider* o, void*) {
-  cube->rotationAngle = ((Fl_Slider*)o)->value();
+  cube->yAxisModelRotation = ((Fl_Slider*)o)->value();
 }
 void MyCubeViewUI::cb_rotationSliderY(Fl_Value_Slider* o, void* v) {
   ((MyCubeViewUI*)(o->parent()->parent()->user_data()))->cb_rotationSliderY_i(o,v);
 }
 
 void MyCubeViewUI::cb_rotationSliderZ_i(Fl_Value_Slider* o, void*) {
-  cube->rotationAngle = ((Fl_Slider*)o)->value();
+  cube->zAxisModelRotation = ((Fl_Slider*)o)->value();
 }
 void MyCubeViewUI::cb_rotationSliderZ(Fl_Value_Slider* o, void* v) {
   ((MyCubeViewUI*)(o->parent()->parent()->user_data()))->cb_rotationSliderZ_i(o,v);
 }
 
 void MyCubeViewUI::cb_rotationSliderX_i(Fl_Value_Slider* o, void*) {
-  cube->verticalRotationAngle = ((Fl_Slider*)o)->value();
+  cube->xAxisModelRotation = ((Fl_Slider*)o)->value();
 }
 void MyCubeViewUI::cb_rotationSliderX(Fl_Value_Slider* o, void* v) {
   ((MyCubeViewUI*)(o->parent()->parent()->user_data()))->cb_rotationSliderX_i(o,v);

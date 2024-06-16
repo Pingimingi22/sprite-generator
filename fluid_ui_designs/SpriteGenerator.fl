@@ -12,7 +12,7 @@ class MyCubeViewUI {open
     comment test open
   } {
     Fl_Window window {open
-      xywh {1973 69 991 696} type Double hide
+      xywh {1988 198 991 696} type Double visible
     } {
       Fl_Group {} {open
         xywh {0 0 991 72}
@@ -22,7 +22,7 @@ class MyCubeViewUI {open
           xywh {1 0 990 72} labelfont 7 labelsize 30 align 128
         }
       }
-      Fl_Group {} {open selected
+      Fl_Group {} {open
         xywh {15 89 958 592} box UP_FRAME
       } {
         Fl_Box cube {
@@ -69,17 +69,17 @@ class MyCubeViewUI {open
         }
         Fl_Value_Slider rotationSliderY {
           label {Rotate model y}
-          callback {cube->rotationAngle = ((Fl_Slider*)o)->value();}
+          callback {cube->yAxisModelRotation = ((Fl_Slider*)o)->value();}
           xywh {25 596 198 22} type {Horz Knob} maximum 360 step 1 textsize 14
         }
         Fl_Value_Slider rotationSliderZ {
           label {Rotate model z}
-          callback {cube->rotationAngle = ((Fl_Slider*)o)->value();}
+          callback {cube->zAxisModelRotation = ((Fl_Slider*)o)->value();}
           xywh {25 633 198 22} type {Horz Knob} maximum 360 step 1 textsize 14
         }
         Fl_Value_Slider rotationSliderX {
           label {Rotate model x}
-          callback {cube->verticalRotationAngle = ((Fl_Slider*)o)->value();}
+          callback {cube->xAxisModelRotation = ((Fl_Slider*)o)->value();} selected
           xywh {25 558 198 24} type {Horz Knob} maximum 360 step 1 textsize 14
         }
         Fl_Tree meshTree {
@@ -132,7 +132,7 @@ class MyCubeViewUI {open
           }
         }
         Fl_Choice {} {
-          label Shader open
+          label Shader
           xywh {422 578 144 24} down_box BORDER_BOX
         } {
           MenuItem {} {
