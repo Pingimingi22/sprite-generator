@@ -83,11 +83,7 @@
      
     if (gl_version_major >= 3 && !hasDoneInit) {
 
-        hasDoneInit = true;
-
-      Assimp::Importer importer;
-     const aiScene *scene = importer.ReadFile("../models/stanfordbunny.obj", aiProcess_Triangulate | aiProcess_FlipUVs |
-                                    aiProcess_JoinIdenticalVertices | aiProcess_GenNormals);
+       hasDoneInit = true;
 
      unlitShaderProgram = CreateShaderProgram("../src/vertex.vert", "../src/unlit.frag");
      gouraudShaderProgram = CreateShaderProgram("../src/vertex.vert", "../src/gouraud.frag");
@@ -95,11 +91,6 @@
 
       std::vector<std::string> textures = {"lambert3_Base_color.png", "lambert1_Base_color.png",
                                            "lambert2_Base_color.png"};
-      meshes = std::vector<Mesh>();
-      for (int i = 0; i < scene->mNumMeshes; i++) {
-        Mesh newMesh = Mesh(scene->mMeshes[i], textures[i], uiStuff);
-        meshes.push_back(newMesh);
-      }
     }
     else if ((!valid())) {
       glViewport(0, 0, pixel_w(), pixel_h());
@@ -148,8 +139,8 @@
       int uniformLocation5 = glGetUniformLocation(activeShaderProgram, "projection");
       glUniformMatrix4fv(uniformLocation5, 1, GL_FALSE, glm::value_ptr(projection));
 
-      for (int i = 0; i < meshes.size(); i++) {
-        meshes[i].Draw();
+      if (currentModel != nullptr) {
+		  currentModel->Draw();
       }
     }
     Fl_Gl_Window::draw(); // Draw FLTK child widgets.
@@ -302,8 +293,8 @@ void SimpleGL3Window::WriteToImage() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // glDrawElements(GL_TRIANGLES, testIndices.size(), GL_UNSIGNED_INT, nullptr);
-    for (int i = 0; i < meshes.size(); i++) {
-      meshes[i].Draw();
+    if (currentModel != nullptr) {
+		currentModel->Draw();
     }
     Fl_Gl_Window::draw();
     // glReadPixels(0, 0, width, height, GL_RGB, GL_UNSIGNED_BYTE, &totalPixelData[0+(width * height
@@ -451,6 +442,19 @@ unsigned int SimpleGL3Window::CreateShaderProgram(std::string vertexSourcePath, 
     glDeleteShader(fs);
 
     return shaderProgram;
+}
+
+void SimpleGL3Window::LoadModel(std::string pathToModel)
+{
+    currentModel = new Model(pathToModel, uiStuff);
+}
+
+void SimpleGL3Window::DeleteCurrentModel()
+{
+    if (currentModel != nullptr) {
+		delete currentModel;
+        currentModel = nullptr;
+    }
 }
 
 bool SimpleGL3Window::ReadFile(std::string filePath, std::string &contents)

@@ -10,13 +10,18 @@
 #include "MyCubeViewUI.h"
 
 
-
 Mesh::Mesh(aiMesh* mesh, std::string diffuseTexture, MyCubeViewUI* ui)
 {
 	this->mesh = mesh;
 	if (mesh != nullptr) {
 		Init(diffuseTexture, ui);
 	}
+}
+
+Mesh::~Mesh() {
+	//glDeleteBuffers(1, &VBO);
+	//glDeleteBuffers(1, &EBO);
+	//glDeleteVertexArrays(1, &VAO);
 }
 
 void Mesh::Draw()
@@ -73,8 +78,10 @@ void Mesh::Init(std::string diffuseTexture, MyCubeViewUI* ui)
 
 	int width, height, nrChannels;
 	unsigned char* data = stbi_load(diffuseTexture.c_str(), &width, &height, &nrChannels, 0);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-	glGenerateMipmap(GL_TEXTURE_2D);
+	if (data != nullptr) {
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
 	stbi_image_free(data);
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);

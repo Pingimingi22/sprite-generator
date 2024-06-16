@@ -34,6 +34,7 @@ public:
 	aiMesh* mesh;
 
 	Mesh(aiMesh* mesh, std::string diffuseTexture, MyCubeViewUI* ui);
+	~Mesh();
 
 	void Draw();
 	void Init(std::string diffuseTexture, MyCubeViewUI* ui);

@@ -111,6 +111,7 @@ void MyCubeViewUI::cb_ortho(Fl_Value_Slider* o, void* v) {
 
 Fl_Menu_Item MyCubeViewUI::menu_Sprite[] = {
  {"512x512", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"256x256", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"128x128", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {"64x64", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
@@ -136,6 +137,33 @@ Fl_Menu_Item MyCubeViewUI::menu_Shader[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+void MyCubeViewUI::cb_Load_i(Fl_Menu_*, void*) {
+  Fl_File_Chooser chooser(".", "*", Fl_File_Chooser::SINGLE, "Load a model");
+  chooser.show();
+
+  while(chooser.shown())
+  {
+  	Fl::wait();
+  }
+  if(chooser.value() == NULL) {
+  	return;
+  }
+
+  cube->DeleteCurrentModel();
+  cube->LoadModel(chooser.value());
+}
+void MyCubeViewUI::cb_Load(Fl_Menu_* o, void* v) {
+  ((MyCubeViewUI*)(o->parent()->parent()->user_data()))->cb_Load_i(o,v);
+}
+
+Fl_Menu_Item MyCubeViewUI::menu_menu[] = {
+ {"File", 0,  0, 0, 64, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Load model", 0,  (Fl_Callback*)MyCubeViewUI::cb_Load, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {0,0,0,0,0,0,0,0,0},
+ {0,0,0,0,0,0,0,0,0}
+};
+Fl_Menu_Item* MyCubeViewUI::file = MyCubeViewUI::menu_menu + 0;
+
 void MyCubeViewUI::show(int argc, char **argv) {
   window->show(argc, argv);
 }
@@ -146,15 +174,15 @@ void MyCubeViewUI::show(int argc, char **argv) {
 MyCubeViewUI::MyCubeViewUI() {
   { window = new Fl_Double_Window(991, 696);
     window->user_data((void*)(this));
-    { Fl_Group* o = new Fl_Group(0, 0, 991, 72);
-      { Fl_Box* o = new Fl_Box(1, 0, 990, 72, "Sprite Generator");
+    { Fl_Group* o = new Fl_Group(0, 26, 991, 80);
+      { Fl_Box* o = new Fl_Box(1, 26, 990, 80, "Sprite Generator");
         o->labelfont(7);
         o->labelsize(30);
         o->align(Fl_Align(FL_ALIGN_WRAP));
       } // Fl_Box* o
       o->end();
     } // Fl_Group* o
-    { Fl_Group* o = new Fl_Group(15, 89, 958, 592);
+    { Fl_Group* o = new Fl_Group(0, 0, 991, 681);
       o->box(FL_UP_FRAME);
       { cube = new SimpleGL3Window(349, 166, 256, 256, "opengl context");
         cube->box(FL_NO_BOX);
@@ -245,6 +273,9 @@ MyCubeViewUI::MyCubeViewUI() {
         o->down_box(FL_BORDER_BOX);
         o->menu(menu_Shader);
       } // Fl_Choice* o
+      { menu = new Fl_Menu_Bar(1, 0, 990, 28);
+        menu->menu(menu_menu);
+      } // Fl_Menu_Bar* menu
       o->end();
     } // Fl_Group* o
     window->end();

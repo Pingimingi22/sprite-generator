@@ -7,11 +7,14 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Box.H>
 #include "SimpleGL3Window.h"
+#include <iostream>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Value_Slider.H>
 #include <FL/Fl_Tree.H>
 #include <FL/Fl_Slider.H>
+#include <FL/Fl_Menu_Bar.H>
+#include <FL/Fl_File_Chooser.H>
 
 class MyCubeViewUI {
 public:
@@ -68,5 +71,12 @@ private:
   static void cb_Gouraud(Fl_Menu_*, void*);
   inline void cb_Unlit_i(Fl_Menu_*, void*);
   static void cb_Unlit(Fl_Menu_*, void*);
+public:
+  Fl_Menu_Bar *menu;
+  static Fl_Menu_Item menu_menu[];
+  static Fl_Menu_Item *file;
+private:
+  inline void cb_Load_i(Fl_Menu_*, void*);
+  static void cb_Load(Fl_Menu_*, void*);
 };
 #endif

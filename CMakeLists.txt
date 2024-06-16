@@ -7,12 +7,13 @@ project(SpriteGenerator)
 
 find_package(OpenGL REQUIRED)
 
-set(SOURCES
+set(GLOB SOURCES
 	"./src/Mesh.cpp"
 	"./src/Source.cpp"
 	"./src/OpenGL3test.cxx"
 	"./fluid_ui_designs/CubeView.cxx"
 	"./fluid_ui_designs/MyCubeViewUI.cxx"
+	"./src/*.cpp"
 )
 
 file(GLOB HEADERS
@@ -21,6 +22,7 @@ file(GLOB HEADERS
 	"./inc/stb_image.h"
 	"./inc/stb_image_write.h"
 	"./fluid_ui_designs/MyCubeViewUI.h"
+	"./inc/*.h"
 )
 
 file(GLOB THIRD_PARTY_LIBRARIES 

@@ -24,7 +24,7 @@
 
 #include "glm/glm.hpp"
 #include <vector>
-#include "Mesh.h"
+#include "Model.h"
 
 
 class MyCubeViewUI;
@@ -56,6 +56,7 @@ public:
     float yAxisModelRotation = 0;
     float zAxisModelRotation = 0;
 
+    Model* currentModel = nullptr;
 
     float cubeScale = 1.0f;
     int directionsToCapture = 8;
@@ -67,12 +68,8 @@ public:
     float cameraZoom = -5.0f;
     float orthoSize = 5.0f;
 
-    /*std::vector<float> testVertices;
-    std::vector<unsigned int> testIndices;
-    std::vector<float> testNormals;*/
-
-    std::vector<Mesh> meshes;
-
+    
+    
     SimpleGL3Window(int x, int y, int w, int h, const char* name);// : Fl_Gl_Window(x, y, w, h)
     void draw(void) FL_OVERRIDE;
     int handle(int event) FL_OVERRIDE;
@@ -87,6 +84,10 @@ public:
     void WriteToImage();
 
     unsigned int CreateShaderProgram(std::string vertexSourcePath, std::string fragmentSourcePath);
+
+    void LoadModel(std::string pathToModel);
+    void DeleteCurrentModel();
+
 
     bool ReadFile(std::string filePath, std::string &contents);
 
