@@ -85,50 +85,6 @@
 
         hasDoneInit = true;
 
-     // Upload vertices (1st four values in a row) and colours (following four values)
-      /* float vertexData[] = { 
-         -0.5, -0.5, 0.5,       0.882f, 0.035f, 0.086,
-         -0.5,  0.5, 0.5,       0.882f, 0.035f, 0.086,
-          0.5,  0.5, 0.5,       0.882f, 0.035f, 0.086,
-          0.5, -0.5, 0.5,       0.882f, 0.035f, 0.086,
-
-
-         -0.5, -0.5, -0.5,       0.960f, 0.698f, 0.004f,
-         -0.5,  0.5, -0.5,       0.960f, 0.698f, 0.004f,
-          0.5,  0.5, -0.5,       0.960f, 0.698f, 0.004f,
-          0.5, -0.5, -0.5,       0.960f, 0.698f, 0.004f,
-
-         -0.5,  0.5,  0.5,       0.196f, 0.6f, 0.0f,
-         -0.5, -0.5,  0.5,       0.196f, 0.6f, 0.0f,
-         -0.5, -0.5, -0.5,       0.196f, 0.6f, 0.0f,
-         -0.5,  0.5, -0.5,       0.196f, 0.6f, 0.0f,
-
-         0.5,   0.5,   0.5,       0.0, 0.6, 0.5,
-         0.5,  -0.5,   0.5,       0.0, 0.6, 0.5,
-         0.5,  -0.5,  -0.5,       0.0, 0.6, 0.5,
-         0.5,   0.5,  -0.5,       0.0, 0.6, 0.5,
-
-          -0.5,  0.5,   0.5,       0.960f, 0.698f, 1.0f,
-          0.5,   0.5,   0.5,       0.960f, 0.698f, 1.0f,
-         -0.5,  0.5,  -0.5,       0.960f, 0.698f, 1.0f,
-          0.5,  0.5,  -0.5,       0.960f, 0.698f, 1.0f,
-
-
-           -0.5,  -0.5,   0.5,       0.25f, 0.3f, 1.0f,
-          0.5,   -0.5,   0.5,       0.25f, 0.3f, 1.0f,
-         -0.5,  -0.5,  -0.5,       0.25f, 0.3f, 1.0f,
-          0.5,  -0.5,  -0.5,       0.25f, 0.3f, 1.0f,
-      };
-
-      unsigned int indexData[] = {0, 1, 2, 2, 3, 0, 
-                                  4, 5, 6, 6, 4, 7,
-                                  8, 9, 10, 11, 8, 10,
-                                  12, 13, 14, 12, 14, 15,
-                                  16, 17, 18, 19, 18, 17,
-                                  20, 21, 22, 23, 21, 22};*/
-        
-      //sizeOfIndexData = sizeof(indexData);
-
       Assimp::Importer importer;
      const aiScene *scene = importer.ReadFile("../models/stanfordbunny.obj", aiProcess_Triangulate | aiProcess_FlipUVs |
                                     aiProcess_JoinIdenticalVertices | aiProcess_GenNormals);
@@ -144,24 +100,6 @@
         Mesh newMesh = Mesh(scene->mMeshes[i], textures[i], uiStuff);
         meshes.push_back(newMesh);
       }
-
-
-      /*glGenBuffers(1, &vertexBuffer);
-      glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-      glBufferData(GL_ARRAY_BUFFER, testVertices.size()*sizeof(float), testVertices.data(), GL_STATIC_DRAW);
-
-      glGenBuffers(1, &elementBuffer);
-      glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBuffer);
-      glBufferData(GL_ELEMENT_ARRAY_BUFFER, testIndices.size()*sizeof(unsigned int), testIndices.data(), GL_STATIC_DRAW);
-
-      glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(float), (void*)0);
-      glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
-                            (void *)(3 * sizeof(float)));
-      glEnableVertexAttribArray(0);
-      glEnableVertexAttribArray(1);*/
-      //glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3*sizeof(float), (void*)(3*sizeof(float)));
-      //glEnableVertexAttribArray(1);
-
     }
     else if ((!valid())) {
       glViewport(0, 0, pixel_w(), pixel_h());
@@ -170,23 +108,10 @@
     glClearColor(0.0f, 0.0f, 0.0f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (unlitShaderProgram && gouraudShaderProgram) {
-      //GLfloat p[]={0,0};
-      //glUniform2fv(positionUniform, 1, (const GLfloat *)&p);
-
-
-        //int vertexCount = (sizeof(vertexData)/sizeof(float))/6;
-      //int vertexCount = testVertices.size();
-
-      
-      //glDrawArrays(GL_TRIANGLES, 0, vertexCount);
-      //glUseProgram(shaderProgram);
       int uniformLocation = glGetUniformLocation(activeShaderProgram, "xOffset");
-      //glUniform1f(uniformLocation, sin(time));
       int uniformLocation2 = glGetUniformLocation(activeShaderProgram, "yOffset");
-      //glUniform1f(uniformLocation2, cos(time));
 
        model = glm::mat4(1.0f);
-      // model = glm::translate(glm::mat4(1), glm::vec3(0.0f, 0.0f, -5.0f));
       model = glm::rotate(glm::mat4(1.0f), rotationAngle * ((3.14159265f)/180),
                           glm::vec3(0.0f, 1.0f, 0.0f));
        model = glm::rotate(model, verticalRotationAngle * ((3.14159265f) / 180),
@@ -197,14 +122,12 @@
 
       view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, cameraZoom));
 
-      //view = glm::rotate(view, 45 * (3.14159265f / 180), glm::vec3(1.0f, 0.0f, 0.0f));
       view = glm::rotate(view, 45 * (3.14159265f / 180), glm::vec3(0.0f, 1.0f, 0.0f));
-
-      //projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
 
       projection = glm::ortho(-orthoSize, orthoSize, -orthoSize, orthoSize, -100.0f, 1000.0f);
       projection = glm::transpose(projection);
       
+      // Turning the ortho projection into an oblique one.
       float s = zScale / orthoSize;
       projection[0][2] = +s * sin((3.14159265f/180) * -angle);
       projection[1][2] = -s * cos((3.14159265f/180) * -angle);
@@ -212,9 +135,7 @@
       projection[1][3] = -zOffset * projection[1][2];
       projection = glm::transpose(projection);
 
-
       glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)); 
-
 
       int uniformLocation3 = glGetUniformLocation(activeShaderProgram, "model");
       glUniformMatrix4fv(uniformLocation3, 1, GL_FALSE, glm::value_ptr(model));
@@ -224,9 +145,6 @@
 
       int uniformLocation5 = glGetUniformLocation(activeShaderProgram, "projection");
       glUniformMatrix4fv(uniformLocation5, 1, GL_FALSE, glm::value_ptr(projection));
-
-      //glDrawElements(GL_TRIANGLES, testVertices.size(), GL_UNSIGNED_INT, nullptr);
-      //glDrawElements(GL_TRIANGLES, testIndices.size(), GL_UNSIGNED_INT, nullptr);
 
       for (int i = 0; i < meshes.size(); i++) {
         meshes[i].Draw();
