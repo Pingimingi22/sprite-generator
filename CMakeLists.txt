@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 project(SpriteGenerator)
 
+find_package(OpenGL REQUIRED)
+
 set(SOURCES
 	"./src/Mesh.cpp"
 	"./src/Source.cpp"
@@ -94,14 +96,24 @@ add_executable(DansSpriteGenerator ${SOURCES} ${HEADERS})
 
 target_link_libraries(DansSpriteGenerator assimp)
 
-target_link_libraries(DansSpriteGenerator ${THIRD_PARTY_LIBRARIES} 
-	"opengl32.lib" 
-	"ole32.lib" 
-	"comctl32.lib" 
-	"ws2_32.lib"
-	"gdiplus.lib"
-	"glu32.lib")
-target_link_libraries(DansSpriteGenerator fltk fltk_gl libglew_static glm::glm-header-only)
+if (WIN32)
+	target_link_libraries(DansSpriteGenerator ${THIRD_PARTY_LIBRARIES} 
+		"opengl32.lib" 
+		"ole32.lib" 
+		"comctl32.lib" 
+		"ws2_32.lib"
+		"gdiplus.lib"
+		"glu32.lib")
+endif (WIN32)
+
+if(APPLE)
+
+endif(APPLE)
+
+
+
+
+target_link_libraries(DansSpriteGenerator fltk fltk_gl libglew_static glm::glm-header-only OpenGL::GL)
 
 
 
@@ -126,4 +138,7 @@ add_custom_command(TARGET DansSpriteGenerator POST_BUILD
 	$<TARGET_FILE_DIR:DansSpriteGenerator>
 	COMMENT "Copying DLL to output directory"
 )
+
+target_compile_options(assimp PRIVATE -Wno-conversion)
+target_compile_options(assimp PRIVATE -Wno-narrowing)
 

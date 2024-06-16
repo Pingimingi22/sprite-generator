@@ -9,6 +9,9 @@
 #include <FL/Fl_Text_Buffer.H>
 #include "SimpleGL3Window.h"
 #if defined(__APPLE__)
+  #ifndef GL_SILENCE_DEPRECATION
+    #define GL_SILENCE_DEPRECATION 1
+  #endif
 #  include <OpenGL/gl3.h> // defines OpenGL 3.0+ functions
 #else
 #  if defined(_WIN32)
