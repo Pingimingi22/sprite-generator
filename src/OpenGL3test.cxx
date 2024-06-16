@@ -61,7 +61,8 @@
 
   SimpleGL3Window::SimpleGL3Window(int x, int y, int w, int h, const char* name) :  Fl_Gl_Window(x, y, w, h) {
     mode(FL_RGB8 | FL_DOUBLE | FL_OPENGL3);
-    shaderProgram = 0;
+    unlitShaderProgram = 0;
+    gouraudShaderProgram = 0;
     gl_version_major = 0;
 
     auto thisIsMyFunction = testFunction;
@@ -80,7 +81,10 @@
       time += speed;
 
      
-    if (gl_version_major >= 3 && !shaderProgram) {
+    if (gl_version_major >= 3 && !hasDoneInit) {
+
+        hasDoneInit = true;
+
      // Upload vertices (1st four values in a row) and colours (following four values)
       /* float vertexData[] = { 
          -0.5, -0.5, 0.5,       0.882f, 0.035f, 0.086,
@@ -129,118 +133,9 @@
      const aiScene *scene = importer.ReadFile("../models/stanfordbunny.obj", aiProcess_Triangulate | aiProcess_FlipUVs |
                                     aiProcess_JoinIdenticalVertices | aiProcess_GenNormals);
 
-      //float vertexData = scene->mMeshes[0]->mVertices;
-      //testVertices = std::vector<float>();
-      //aiMesh *mesh = scene->mMeshes[0];
-
-      //testNormals = std::vector<float>();
-	  //testIndices = std::vector<unsigned int>();
-
-     
-
-      
-      /* for (int k = 0; k < scene->mNumMeshes; k++) {
-		  for (int i = 0; i < scene->mMeshes[k]->mNumVertices; i++) {
-			testVertices.push_back(scene->mMeshes[k]->mVertices[i].x);
-			testVertices.push_back(scene->mMeshes[k]->mVertices[i].y);
-			testVertices.push_back(scene->mMeshes[k]->mVertices[i].z);
-
-			testVertices.push_back(scene->mMeshes[k]->mNormals[i].x);
-			testVertices.push_back(scene->mMeshes[k]->mNormals[i].y);
-			testVertices.push_back(scene->mMeshes[k]->mNormals[i].z);
-		  }
-		  for (int i = 0; i < scene->mMeshes[k]->mNumFaces; i++) {
-			for (int j = 0; j < scene->mMeshes[k]->mFaces[i].mNumIndices; j++) {
-			  testIndices.push_back(scene->mMeshes[k]->mFaces[i].mIndices[j]);
-			}
-		  }
-      }*/
-
-        //uiStuff->speedInput->value(speed);
-      GLuint  vs;
-      GLuint  fs;
-      int Mslv, mslv; // major and minor version numbers of the shading language
-      sscanf((char*)glGetString(GL_SHADING_LANGUAGE_VERSION), "%d.%d", &Mslv, &mslv);
-      add_output("Shading Language Version=%d.%d\n",Mslv, mslv);
-
-      const char *vss_format = "#version 330 core\n"
-                               "layout (location = 0) in vec3 aPos;\n"
-                               "layout (location = 1) in vec3 aNormal;\n"
-                               "layout (location = 2) in vec2 aTex;\n"
-                               "out vec4 colourV;\n"
-                               "out vec4 lightDir;\n"
-                                "out vec4 normal;\n"
-                               "out vec2 TexCoord;\n"
-                               "uniform float xOffset;\n"
-                               "uniform float yOffset;\n"
-                               "uniform mat4 model;\n"
-                               "uniform mat4 view;\n"
-                               "uniform mat4 projection;\n"
-                               "void main()\n"
-                               "{\n"
-
-                                "TexCoord = aTex;\n"
-                                "normal = vec4(aNormal.x, aNormal.y, aNormal.z, 1.0);"
-                               "gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
-                               "colourV = vec4(1.0, 1.0, 1.0, 1.0);\n"
-                               "lightDir = normalize(vec4(10.0, 10.0, 10.0, 1.0) - gl_Position);\n"
-                               "}\0";
-
-      char vss_string[1024]; const char *vss = vss_string;
-      snprintf(vss_string, 1024, vss_format, Mslv, mslv);
-      const char *fss_format="#version %d%d\n\
-      in vec4 colourV;\
-      out vec4 fragColour;\
-      in vec4 lightDir;\
-      in vec4 normal;\
-in vec2 TexCoord;\
-uniform sampler2D ourTexture;\
-      void main(void)\
-      {\
-        float diff = max(dot(normal, lightDir), 0.0);\
-      fragColour = texture(ourTexture, TexCoord);\
-      }\0";
-      char fss_string[512]; const char *fss = fss_string;
-      snprintf(fss_string, 512, fss_format, Mslv, mslv);
-      GLint err; GLchar CLOG[1000]; GLsizei length;
-      vs = glCreateShader(GL_VERTEX_SHADER);
-      glShaderSource(vs, 1, &vss, NULL);
-      glCompileShader(vs);
-      glGetShaderiv(vs, GL_COMPILE_STATUS, &err);
-      if (err != GL_TRUE) {
-        glGetShaderInfoLog(vs, sizeof(CLOG), &length, CLOG);
-        add_output("vs ShaderInfoLog=%s\n",CLOG);
-        std::cout << CLOG << std::endl;
-        }
-      fs = glCreateShader(GL_FRAGMENT_SHADER);
-      glShaderSource(fs, 1, &fss, NULL);
-      glCompileShader(fs);
-      glGetShaderiv(fs, GL_COMPILE_STATUS, &err);
-      if (err != GL_TRUE) {
-        glGetShaderInfoLog(fs, sizeof(CLOG), &length, CLOG);
-        add_output("fs ShaderInfoLog=%s\n",CLOG);
-        std::cout << CLOG << std::endl;
-        }
-      // Attach the shaders
-      shaderProgram = glCreateProgram();
-      glAttachShader(shaderProgram, vs);
-      glAttachShader(shaderProgram, fs);
-      //glBindFragDataLocation(shaderProgram, 0, "fragColour");
-      glLinkProgram(shaderProgram);
-      glGetProgramiv(shaderProgram, GL_LINK_STATUS, &err);
-      if (err != GL_TRUE) {
-        glGetProgramInfoLog(shaderProgram, sizeof(CLOG), &length, CLOG);
-        add_output("link log=%s\n", CLOG);
-      }
-      // Get pointers to uniforms and attributes
-      //positionUniform = glGetUniformLocation(shaderProgram, "p");
-      //colourAttribute = glGetAttribLocation(shaderProgram, "colour");
-      //positionAttribute = glGetAttribLocation(shaderProgram, "position");
-      glDeleteShader(vs);
-      glDeleteShader(fs);
-     
-      //glGenVertexArrays(1, &vertexArrayObject);
-      //glBindVertexArray(vertexArrayObject);
+     unlitShaderProgram = CreateShaderProgram("../src/vertex.vert", "../src/unlit.frag");
+     gouraudShaderProgram = CreateShaderProgram("../src/vertex.vert", "../src/gouraud.frag");
+     ActivateShaderProgram(gouraudShaderProgram);
 
       std::vector<std::string> textures = {"lambert3_Base_color.png", "lambert1_Base_color.png",
                                            "lambert2_Base_color.png"};
@@ -274,7 +169,7 @@ uniform sampler2D ourTexture;\
     }
     glClearColor(0.0f, 0.0f, 0.0f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    if (shaderProgram) {
+    if (unlitShaderProgram && gouraudShaderProgram) {
       //GLfloat p[]={0,0};
       //glUniform2fv(positionUniform, 1, (const GLfloat *)&p);
 
@@ -282,12 +177,12 @@ uniform sampler2D ourTexture;\
         //int vertexCount = (sizeof(vertexData)/sizeof(float))/6;
       //int vertexCount = testVertices.size();
 
-
+      
       //glDrawArrays(GL_TRIANGLES, 0, vertexCount);
-      glUseProgram(shaderProgram);
-      int uniformLocation = glGetUniformLocation(shaderProgram, "xOffset");
+      //glUseProgram(shaderProgram);
+      int uniformLocation = glGetUniformLocation(activeShaderProgram, "xOffset");
       //glUniform1f(uniformLocation, sin(time));
-      int uniformLocation2 = glGetUniformLocation(shaderProgram, "yOffset");
+      int uniformLocation2 = glGetUniformLocation(activeShaderProgram, "yOffset");
       //glUniform1f(uniformLocation2, cos(time));
 
        model = glm::mat4(1.0f);
@@ -321,13 +216,13 @@ uniform sampler2D ourTexture;\
       glm::mat4 translation = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 0.0f, 0.0f)); 
 
 
-      int uniformLocation3 = glGetUniformLocation(shaderProgram, "model");
+      int uniformLocation3 = glGetUniformLocation(activeShaderProgram, "model");
       glUniformMatrix4fv(uniformLocation3, 1, GL_FALSE, glm::value_ptr(model));
 
-      int uniformLocation4 = glGetUniformLocation(shaderProgram, "view");
+      int uniformLocation4 = glGetUniformLocation(activeShaderProgram, "view");
       glUniformMatrix4fv(uniformLocation4, 1, GL_FALSE, glm::value_ptr(view));
 
-      int uniformLocation5 = glGetUniformLocation(shaderProgram, "projection");
+      int uniformLocation5 = glGetUniformLocation(activeShaderProgram, "projection");
       glUniformMatrix4fv(uniformLocation5, 1, GL_FALSE, glm::value_ptr(projection));
 
       //glDrawElements(GL_TRIANGLES, testVertices.size(), GL_UNSIGNED_INT, nullptr);
@@ -363,33 +258,15 @@ uniform sampler2D ourTexture;\
                    "rendering pipeline will not run.\n");
         mode(mode() & ~FL_OPENGL3);
       }
-     // redraw();
     }
-
-    //redraw();
 
     int retval = Fl_Gl_Window::handle(event);
     if (retval) return retval;
 
-    /* if (event == FL_PUSH && gl_version_major >= 3) {
-      static float factor = 1.1;
-      GLfloat data[4];
-      glGetBufferSubData(GL_ARRAY_BUFFER, 0, 4*sizeof(GLfloat), data);
-      if (data[0] < -0.88 || data[0] > -0.5) factor = 1/factor;
-      data[0] *= factor;
-      glBufferSubData(GL_ARRAY_BUFFER, 0, 4*sizeof(GLfloat), data);
-      glGetBufferSubData(GL_ARRAY_BUFFER, 24*sizeof(GLfloat), 4*sizeof(GLfloat), data);
-      data[0] *= factor;
-      glBufferSubData(GL_ARRAY_BUFFER, 24*sizeof(GLfloat), 4*sizeof(GLfloat), data);
-      //redraw();
-      add_output("push  Fl_Gl_Window::pixels_per_unit()=%.1f\n", pixels_per_unit());
-      return 1;
-    }*/
-
     return retval;
   }
   void SimpleGL3Window::reset(void) {
-    shaderProgram = 0;
+    //shaderProgram = 0;
     gl_texture_reset();
   }
   //};
@@ -494,13 +371,13 @@ void SimpleGL3Window::WriteToImage() {
 
     model = glm::scale(model, glm::vec3(cubeScale, cubeScale, cubeScale));
 
-    int uniformLocation3 = glGetUniformLocation(shaderProgram, "model");
+    int uniformLocation3 = glGetUniformLocation(activeShaderProgram, "model");
     glUniformMatrix4fv(uniformLocation3, 1, GL_FALSE, glm::value_ptr(model));
 
-    int uniformLocation4 = glGetUniformLocation(shaderProgram, "view");
+    int uniformLocation4 = glGetUniformLocation(activeShaderProgram, "view");
     glUniformMatrix4fv(uniformLocation4, 1, GL_FALSE, glm::value_ptr(view));
 
-    int uniformLocation5 = glGetUniformLocation(shaderProgram, "projection");
+    int uniformLocation5 = glGetUniformLocation(activeShaderProgram, "projection");
     glUniformMatrix4fv(uniformLocation5, 1, GL_FALSE, glm::value_ptr(projection));
     glClearColor(0.0f, 0.0f, 0.0f, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -588,9 +465,6 @@ void SimpleGL3Window::WriteToImage() {
   stbi_write_png(fileName.c_str(), width * amountOfGridRows, height * amountOfGridRows, channels,
                  &upsideDownPixelData[0], width * 3 * amountOfGridRows);
 
- 
-
-
   /* rotationAngle = 0;
   verticalRotationAngle = 0;
   model = glm::mat4(1.0f);
@@ -607,6 +481,94 @@ void SimpleGL3Window::WriteToImage() {
   Fl_Gl_Window::draw();
 
   //myFile.close();*/
+}
+
+unsigned int SimpleGL3Window::CreateShaderProgram(std::string vertexSourcePath, std::string fragmentSourcePath)
+{
+    std::string vertexShaderSource;
+    if (!ReadFile(vertexSourcePath, vertexShaderSource)) {
+        return 0;
+    }
+    const char* vsSource = vertexShaderSource.c_str();
+    std::string fragmentShaderSource;
+    if (!ReadFile(fragmentSourcePath, fragmentShaderSource)) {
+        return 0;
+    }
+    const char* fsSource = fragmentShaderSource.c_str();
+
+    GLint err; GLchar CLOG[1000]; GLsizei length;
+
+    unsigned int vs = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(vs, 1, &vsSource, NULL);
+    glCompileShader(vs);
+    glGetShaderiv(vs, GL_COMPILE_STATUS, &err);
+    if (err != GL_TRUE) {
+        glGetShaderInfoLog(vs, sizeof(CLOG), &length, CLOG);
+        add_output("vs ShaderInfoLog=%s\n", CLOG);
+        std::cout << CLOG << std::endl;
+    }
+    unsigned int fs = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fs, 1, &fsSource, NULL);
+    glCompileShader(fs);
+    glGetShaderiv(fs, GL_COMPILE_STATUS, &err);
+    if (err != GL_TRUE) {
+        glGetShaderInfoLog(fs, sizeof(CLOG), &length, CLOG);
+        add_output("fs ShaderInfoLog=%s\n", CLOG);
+        std::cout << CLOG << std::endl;
+    }
+    // Attach the shaders
+    unsigned int shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vs);
+    glAttachShader(shaderProgram, fs);
+    //glBindFragDataLocation(shaderProgram, 0, "fragColour");
+    glLinkProgram(shaderProgram);
+    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &err);
+    if (err != GL_TRUE) {
+        glGetProgramInfoLog(shaderProgram, sizeof(CLOG), &length, CLOG);
+        add_output("link log=%s\n", CLOG);
+    }
+    glDeleteShader(vs);
+    glDeleteShader(fs);
+
+    return shaderProgram;
+}
+
+bool SimpleGL3Window::ReadFile(std::string filePath, std::string &contents)
+{
+    std::string line;
+    std::string fileContents;
+
+    std::ifstream file;
+    file.open(filePath);
+    if (file.is_open()) {
+        while (std::getline(file, line)) {
+            fileContents.append(line + '\n');
+        }
+        file.close();
+
+        contents = fileContents;
+        return true;
+    }
+    else {
+        std::cout << "Could not open " << filePath << " file." << std::endl;
+        return false;
+    }
+}
+
+void SimpleGL3Window::ActivateShaderProgram(unsigned int shaderProgram)
+{
+    activeShaderProgram = shaderProgram;
+    glUseProgram(shaderProgram);
+}
+
+void SimpleGL3Window::ActivateGouraud()
+{
+    ActivateShaderProgram(gouraudShaderProgram);
+}
+
+void SimpleGL3Window::ActivateUnlit()
+{
+    ActivateShaderProgram(unlitShaderProgram);
 }
 
 /*

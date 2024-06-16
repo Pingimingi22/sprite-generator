@@ -64,5 +64,9 @@ private:
   static void cb_ortho(Fl_Value_Slider*, void*);
   static Fl_Menu_Item menu_Sprite[];
   static Fl_Menu_Item menu_Shader[];
+  inline void cb_Gouraud_i(Fl_Menu_*, void*);
+  static void cb_Gouraud(Fl_Menu_*, void*);
+  inline void cb_Unlit_i(Fl_Menu_*, void*);
+  static void cb_Unlit(Fl_Menu_*, void*);
 };
 #endif

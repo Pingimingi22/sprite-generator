@@ -26,7 +26,9 @@
 
 class MyCubeViewUI;
 class SimpleGL3Window : public Fl_Gl_Window {
-    GLuint shaderProgram;
+    GLuint activeShaderProgram;
+    GLuint unlitShaderProgram;
+    GLuint gouraudShaderProgram;
     GLuint vertexArrayObject;
     GLuint vertexBuffer;
     GLuint elementBuffer;
@@ -36,6 +38,8 @@ class SimpleGL3Window : public Fl_Gl_Window {
     int gl_version_major;
     Fl_Text_Display* output; // shared between output_win() and add_output()
     int sizeOfIndexData;
+
+    bool hasDoneInit = false;
 public:
     MyCubeViewUI* uiStuff;
     glm::mat4 model;
@@ -74,7 +78,13 @@ public:
 
     void WriteToImage();
 
+    unsigned int CreateShaderProgram(std::string vertexSourcePath, std::string fragmentSourcePath);
 
+    bool ReadFile(std::string filePath, std::string &contents);
+
+    void ActivateShaderProgram(unsigned int shaderProgram);
+    void ActivateGouraud();
+    void ActivateUnlit();
 
 
     void static testFunction(void* data);

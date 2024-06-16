@@ -12,7 +12,7 @@ class MyCubeViewUI {open
     comment test open
   } {
     Fl_Window window {open
-      xywh {1973 69 991 696} type Double visible
+      xywh {1973 69 991 696} type Double hide
     } {
       Fl_Group {} {open
         xywh {0 0 991 72}
@@ -137,10 +137,12 @@ class MyCubeViewUI {open
         } {
           MenuItem {} {
             label {Gouraud shading}
+            callback {cube->ActivateGouraud();}
             xywh {0 0 100 20}
           }
           MenuItem {} {
             label Unlit
+            callback {cube->ActivateUnlit();}
             xywh {0 0 100 20}
           }
         }

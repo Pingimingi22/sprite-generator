@@ -116,9 +116,23 @@ Fl_Menu_Item MyCubeViewUI::menu_Sprite[] = {
  {0,0,0,0,0,0,0,0,0}
 };
 
+void MyCubeViewUI::cb_Gouraud_i(Fl_Menu_*, void*) {
+  cube->ActivateGouraud();
+}
+void MyCubeViewUI::cb_Gouraud(Fl_Menu_* o, void* v) {
+  ((MyCubeViewUI*)(o->parent()->parent()->user_data()))->cb_Gouraud_i(o,v);
+}
+
+void MyCubeViewUI::cb_Unlit_i(Fl_Menu_*, void*) {
+  cube->ActivateUnlit();
+}
+void MyCubeViewUI::cb_Unlit(Fl_Menu_* o, void* v) {
+  ((MyCubeViewUI*)(o->parent()->parent()->user_data()))->cb_Unlit_i(o,v);
+}
+
 Fl_Menu_Item MyCubeViewUI::menu_Shader[] = {
- {"Gouraud shading", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
- {"Unlit", 0,  0, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Gouraud shading", 0,  (Fl_Callback*)MyCubeViewUI::cb_Gouraud, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
+ {"Unlit", 0,  (Fl_Callback*)MyCubeViewUI::cb_Unlit, 0, 0, (uchar)FL_NORMAL_LABEL, 0, 14, 0},
  {0,0,0,0,0,0,0,0,0}
 };
 
