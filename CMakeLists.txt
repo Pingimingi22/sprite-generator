@@ -107,7 +107,8 @@ if (WIN32)
 endif (WIN32)
 
 if(APPLE)
-
+	target_compile_options(assimp PRIVATE -Wno-conversion)
+	target_compile_options(assimp PRIVATE -Wno-narrowing)
 endif(APPLE)
 
 
@@ -139,6 +140,5 @@ add_custom_command(TARGET DansSpriteGenerator POST_BUILD
 	COMMENT "Copying DLL to output directory"
 )
 
-target_compile_options(assimp PRIVATE -Wno-conversion)
-target_compile_options(assimp PRIVATE -Wno-narrowing)
+
 
