@@ -14,7 +14,7 @@ I wanted to try recreate the prerendered sprite look from those types of games s
 
 You can import a 3D model and generate a sprite sheet from it, which can then be used in game engines.
 
-<img width="988" height="721" alt="image" src="https://github.com/user-attachments/assets/4a0bcce5-0381-4c78-acd0-299e99c1e1e0" />
+<img width="988" height="722" alt="image" src="https://github.com/user-attachments/assets/c40c14d0-2c2a-40f2-9d73-1d7559c6d78d" />
 
 <img width="686" height="662" alt="spinning_bunny_lighting" src="https://github.com/user-attachments/assets/e1cef34d-25f0-452e-95b4-4421e8edfa1c" />
 
