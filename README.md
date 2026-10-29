@@ -5,6 +5,10 @@ cd builds
 cmake ../
 ```
 
+# Scroll to bottom to see more screenshots!
+
+<img width="988" height="722" alt="image" src="https://github.com/user-attachments/assets/c40c14d0-2c2a-40f2-9d73-1d7559c6d78d" />
+
 # What is this?
 This was a passion project I worked on mainly to learn about a special type of camera projection known as an oblique projection. Most games usually either use a standard perspective camera projection (think any 3D game, first person shooter, etc) OR they use an orthographic projection (most 2D games that are 'side-on' like mario, or isometric like Xcom or Project Zomboid.) 
 
@@ -14,7 +18,10 @@ I wanted to try recreate the prerendered sprite look from those types of games s
 
 You can import a 3D model and generate a sprite sheet from it, which can then be used in game engines.
 
-<img width="988" height="722" alt="image" src="https://github.com/user-attachments/assets/c40c14d0-2c2a-40f2-9d73-1d7559c6d78d" />
+# Other technologies
+I also used this project as chance to practice my CMake, C++ and OpenGL skills. The graphics rendering uses OpenGL directly and the project builds with CMake. With CMake I setup the project so it would compile on Windows and MacOS.
+
+# Screenshots
 
 <img width="686" height="662" alt="spinning_bunny_lighting" src="https://github.com/user-attachments/assets/e1cef34d-25f0-452e-95b4-4421e8edfa1c" />
 
