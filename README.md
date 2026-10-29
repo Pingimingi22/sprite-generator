@@ -19,7 +19,10 @@ I wanted to try recreate the prerendered sprite look from those types of games s
 You can import a 3D model and generate a sprite sheet from it, which can then be used in game engines.
 
 # Other technologies
-I also used this project as chance to practice my CMake, C++ and OpenGL skills. The graphics rendering uses OpenGL directly and the project builds with CMake. With CMake I setup the project so it would compile on Windows and MacOS.
+- CMake, C++, OpenGL, FLTK
+I also used this project as chance to practice my CMake, C++, FLTK and OpenGL skills.
+- The graphics rendering uses OpenGL directly and the project builds with CMake. With CMake I setup the project so it would compile on Windows and MacOS.
+- I also tried playing around with the FLTK UI library. It's pretty old school but the look of it really appealed to me as well as its design philosophies (it's meant to be light weight and work well with OpenGL projects).
 
 # Screenshots
 
